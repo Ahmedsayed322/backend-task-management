@@ -92,34 +92,38 @@ userSchema.statics.login = function _callee2(email, password) {
     while (1) {
       switch (_context2.prev = _context2.next) {
         case 0:
-          user = this.findOne({
+          _context2.next = 2;
+          return regeneratorRuntime.awrap(this.findOne({
             email: email
-          });
+          }));
+
+        case 2:
+          user = _context2.sent;
           _context2.t0 = !user;
 
-          if (!_context2.t0) {
-            _context2.next = 6;
+          if (_context2.t0) {
+            _context2.next = 8;
             break;
           }
 
-          _context2.next = 5;
+          _context2.next = 7;
           return regeneratorRuntime.awrap(bcrypt.compare(password, user.password));
 
-        case 5:
+        case 7:
           _context2.t0 = _context2.sent;
 
-        case 6:
+        case 8:
           if (!_context2.t0) {
-            _context2.next = 8;
+            _context2.next = 10;
             break;
           }
 
           throw new Error('Invalid Email or Password');
 
-        case 8:
+        case 10:
           return _context2.abrupt("return", user);
 
-        case 9:
+        case 11:
         case "end":
           return _context2.stop();
       }
@@ -142,20 +146,23 @@ userSchema.methods.generateToken = function _callee3() {
           this.tokens = this.tokens.concat({
             token: token
           });
-          this.save();
+          _context3.next = 5;
+          return regeneratorRuntime.awrap(this.save());
+
+        case 5:
           return _context3.abrupt("return", token);
 
-        case 7:
-          _context3.prev = 7;
+        case 8:
+          _context3.prev = 8;
           _context3.t0 = _context3["catch"](0);
           throw new Error('Error when jwt');
 
-        case 10:
+        case 11:
         case "end":
           return _context3.stop();
       }
     }
-  }, null, this, [[0, 7]]);
+  }, null, this, [[0, 8]]);
 };
 
 userSchema.statics.update = function _callee4(req) {

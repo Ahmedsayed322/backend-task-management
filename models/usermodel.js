@@ -51,8 +51,8 @@ userSchema.pre('save', async function (next) {
   }
 });
 userSchema.statics.login = async function (email, password) {
-  const user = this.findOne({ email });
-  if (!user && (await bcrypt.compare(password, user.password))) {
+  const user = await this.findOne({ email });
+  if (!user || (await bcrypt.compare(password, user.password))) {
     throw new Error('Invalid Email or Password');
   }
   return user;
@@ -68,7 +68,7 @@ userSchema.methods.generateToken = async function () {
       process.env.JWT_SECRET
     );
     this.tokens = this.tokens.concat({ token });
-    this.save();
+    await this.save();
     return token;
   } catch (err) {
     throw new Error('Error when jwt');
