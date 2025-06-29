@@ -161,6 +161,53 @@ taskRoute["delete"]('/admin/taskes/delete/:id', adminAuth, function _callee3(req
     }
   }, null, null, [[0, 16]]);
 });
+taskRoute.patch('/admin/task/:id', adminAuth, function _callee4(req, res) {
+  var _id, task;
+
+  return regeneratorRuntime.async(function _callee4$(_context4) {
+    while (1) {
+      switch (_context4.prev = _context4.next) {
+        case 0:
+          _context4.prev = 0;
+          _id = req.params.id;
+          _context4.next = 4;
+          return regeneratorRuntime.awrap(Task.findOneAndUpdate({
+            _id: _id,
+            'addedby.user.id': req.admin._id
+          }, req.body, {
+            "new": true,
+            runValidators: true
+          }));
+
+        case 4:
+          task = _context4.sent;
+
+          if (task) {
+            _context4.next = 7;
+            break;
+          }
+
+          return _context4.abrupt("return", res.status(404).json({
+            message: 'task not found'
+          }));
+
+        case 7:
+          return _context4.abrupt("return", res.status(200).json(task));
+
+        case 10:
+          _context4.prev = 10;
+          _context4.t0 = _context4["catch"](0);
+          res.status(500).json({
+            message: _context4.t0.message
+          });
+
+        case 13:
+        case "end":
+          return _context4.stop();
+      }
+    }
+  }, null, null, [[0, 10]]);
+});
 module.exports = {
   taskRoute: taskRoute
 };

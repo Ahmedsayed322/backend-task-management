@@ -53,6 +53,28 @@ taskRoute.delete('/admin/taskes/delete/:id', adminAuth, async (req, res) => {
     res.status(500).json({ message: e.message });
   }
 });
+taskRoute.patch('/admin/task/:id', adminAuth, async (req, res) => {
+  try {
+    const _id = req.params.id;
+    const task = await Task.findOneAndUpdate(
+      {
+        _id,
+        'addedby.user.id': req.admin._id,
+      },
+      req.body,
+      {
+        new: true,
+        runValidators: true,
+      }
+    );
+    if (!task) {
+      return res.status(404).json({ message: 'task not found' });
+    }
+    return res.status(200).json(task);
+  } catch (e) {
+    res.status(500).json({ message: e.message });
+  }
+});
 module.exports = {
   taskRoute,
 };
